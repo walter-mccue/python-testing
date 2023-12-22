@@ -175,3 +175,5 @@ students = [alice, lloyd, tyler]    #stores students in a list
 
 print (get_class_average(students))    #prints total class average
 print (get_letter_grade(get_class_average(students)))    #prints class score as a letter grade
+
+
