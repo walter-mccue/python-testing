@@ -1,9 +1,35 @@
-#
-#
-# Advanced Battleship Game
+# Title: advanced_battleship.py
+# Author: Walter McCue
+# Date 12/22/23
 #
 
 from random import randint
+import json
+
+with open ('battleship_rankings.json') as data:
+  ranks = json.load(data)
+
+
+def single_player_rank(name, turn_count):
+  player_rank = {
+    "name": name,
+    "last_single_play": turn_count,
+    #"best_single_play": "top_score",
+    #"competitive_wins": "win_count",
+    #"competitive_losses": "loss_count"
+  }
+  return player_rank
+
+def two_player_rank(name, win, loss):
+  player_rank = {
+    "name": name,
+    #"last_single_play": "turn_count",
+    #"best_single_play": "top_score",
+    "competitive_wins": win,
+    "competitive_losses": loss
+  }
+  return player_rank
+
 
 # Battleship board set-up
 def new_board():
@@ -108,7 +134,7 @@ def ship_locations():
 # Game Rules
 def rules():
   print ("Rules:\n \
-      1. Single Players: You only have 15 turns to sink the fleet.\n \
+      1. Single Players: You only have 20 turns to sink the fleet.\n \
          Two Players: Each player will get a turn until a player sinks the other's fleet.\n \
       2. Ships are placed randomly.\n \
       3. There are three battleships per fleet.\n \
@@ -157,25 +183,26 @@ def player_turn(turn_board, ships, score):
   # Determines where attacks land
   hit = turn_board[attack[0]][attack[1]] = "X "
   if attack[0] == 0 or attack[1] == 0:    # Invalid attack
-    print ("Oops. Your attack wasn't even in the ocean!\n\n")
+    print ("Oops. Your attack wasn't even in the ocean!")
   elif turn_board[attack[0]][attack[1]] == "X" or turn_board[attack[0]][attack[1]] == "M":    # Attack on a previous target
-    print ("Oops. You already attacked that location\n\n")
+    print ("Oops. You already attacked that location.")
   elif attack == ships[0][0] or attack == ships[0][1] or \
   attack == ships[0][2]:    # Attack hit Carrier
-    print ("You hit the Carrier!\n\n")
+    print ("You hit the Carrier!")
     hit
     score += 1
   elif attack == ships[1][0] or attack == ships[1][1]:    # Attack hit Destroyer
-    print ("You hit the Destroyer!\n\n")
+    print ("You hit the Destroyer!")
     hit
     score += 1
   elif attack == ships[2]:    # Attack hit Gunship
-    print ("You hit the Gunship!\n\n")
+    print ("You hit the Gunship!")
     hit
     score += 1
   else:   # Attack missed a target but landed on the board
-    print ("Sorry, you missed.\n\n")
+    print ("Sorry, you missed.")
     turn_board[attack[0]][attack[1]] = "M "
+  print ("\n\n")
   return turn_board, score
 
 
@@ -186,7 +213,7 @@ def play_single():
   player_board = new_board()
   player_ships = ship_locations()
   player_score = 0
-
+  
   # Player has 20 turns
   for turn in range(20):
     print ("You have 20 turns. Turn: " + str(turn + 1))
