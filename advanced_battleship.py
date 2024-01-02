@@ -9,27 +9,22 @@ import json
 with open ('battleship_rankings.json') as data:
   ranks = json.load(data)
 
+#print (ranks)
 
-def single_player_rank(name, turn_count):
-  player_rank = {
-    "name": name,
-    "last_single_play": turn_count,
-    #"best_single_play": "top_score",
-    #"competitive_wins": "win_count",
-    #"competitive_losses": "loss_count"
-  }
-  return player_rank
+#def print_ranks(ranks):
+#  for item in ranks:
+#    for key in item:
+#      print (item[key])
+#print (print_ranks(ranks))
 
-def two_player_rank(name, win, loss):
-  player_rank = {
-    "name": name,
-    #"last_single_play": "turn_count",
-    #"best_single_play": "top_score",
-    "competitive_wins": win,
-    "competitive_losses": loss
-  }
-  return player_rank
 
+# Will return true if player record is found
+def overwrite_ranks(name):
+  for item in ranks:
+    for key in item:
+      if item[key] == name:
+        return True
+  
 
 # Battleship board set-up
 def new_board():
@@ -191,12 +186,19 @@ def player_turn(turn_board, ships, score):
     print ("You hit the Carrier!")
     hit
     score += 1
+    if turn_board[ships[0][0][0]][ships[0][0][1]] == "X " and \
+      turn_board[ships[0][1][0]][ships[0][1][1]] == "X " and \
+      turn_board[ships[0][2][0]][ships[0][2][1]] == "X ":
+      print ("You sunk the Carrier!!!")
   elif attack == ships[1][0] or attack == ships[1][1]:    # Attack hit Destroyer
     print ("You hit the Destroyer!")
     hit
     score += 1
+    if turn_board[ships[1][0][0]][ships[1][0][1]] == "X " and \
+      turn_board[ships[1][1][0]][ships[1][1][1]] == "X ":
+      print ("You sunk the Destroyer!!!")
   elif attack == ships[2]:    # Attack hit Gunship
-    print ("You hit the Gunship!")
+    print ("You sunk the Gunship!!!")
     hit
     score += 1
   else:   # Attack missed a target but landed on the board
@@ -215,9 +217,11 @@ def play_single():
   player_score = 0
   
   # Player has 20 turns
-  for turn in range(20):
-    print ("You have 20 turns. Turn: " + str(turn + 1))
+  for turn in range(21):
+    turn += 1
+    print ("You have 20 turns. Turn: " + str(turn))
     print (print_board(player_board))
+    print (player_ships)
     current_turn = player_turn(player_board, player_ships, player_score)    # Calls the player_turn function
     player_board = current_turn[0]    # Puts the last attack on the board
     player_score = current_turn[1]
@@ -226,11 +230,27 @@ def play_single():
     if player_score == 6:    # When player has hit all 6 marks, they win
       print ("You Win!")
       break
-    elif turn == 20:    # After 20 turns, game over
+    if turn == 21:    # After 20 turns, game over
       print ("Game Over")
       break
-    else:   # Progresses to the next turn
-      turn + 1
+
+  # Player Record
+  overwrite = overwrite_ranks(player)   # Determines if player record exists
+  if overwrite == True:   # If record exists, overwrite last game score with this score
+    for item in ranks:    # And check to see if this score beats the record
+      for key in item:    # If new score beats the record, sets new high record
+        if item[key] == player:
+          item["last_single_play"] = turn
+          if item["best_single_play"] > turn:
+            item["best_single_play"] = turn
+  else:   # If player record does not exist, create it
+    ranks.append({ "name": player, \
+                  "last_single_play": turn, \
+                  "best_single_play": turn, \
+                  "competitive_wins": 0, \
+                  "competitive_losses": 0 })
+  json.dump( ranks, open( "battleship_rankings.json", 'w' ))    # Updates the battleship_rankings
+
   exit()
     
 
@@ -242,12 +262,14 @@ def play_two():
   one_board = new_board()
   one_ships = ship_locations()
   one_score = 0
+  one_overwrite = overwrite_ranks(player_one)
 
   # Player two set-up
   player_two = input ("What is player 2 name?\n")
   two_board = new_board()
   two_ships = ship_locations()
   two_score = 0
+  two_overwrite = overwrite_ranks(player_two)
 
   print (("Hello %s and %s.") % (player_one, player_two))
 
@@ -260,8 +282,35 @@ def play_two():
     one_turn = player_turn(one_board, one_ships, one_score)
     one_board = one_turn[0]
     one_score = one_turn[1]
+
     if one_score == 6:    # Player one winner!
       print (player_one + " is the winner!")
+
+      # Player Record
+      if one_overwrite == True:   # If record exists, add 1 to win count
+        for item in ranks:
+          for key in item:
+            if item[key] == player_one:
+              item["competitive_wins"] += 1
+      else:   # If player record does not exist, create it
+        ranks.append({ "name": player_one, \
+                      "last_single_play": 0, \
+                      "best_single_play": 0, \
+                      "competitive_wins": 1, \
+                      "competitive_losses": 0 })
+      if two_overwrite == True:   # If record exists, add 1 to loss count
+        for item in ranks:
+          for key in item:
+            if item[key] == player_two:
+              item["competitive_losses"] += 1
+      else:   # If player record does not exist, create it
+        ranks.append({ "name": player_two, \
+                      "last_single_play": 0, \
+                      "best_single_play": 0, \
+                      "competitive_wins": 0, \
+                      "competitive_losses": 1 })
+      json.dump( ranks, open( "battleship_rankings.json", 'w' ))    # Updates the battleship_rankings
+
       break
 
     # Player two turn
@@ -270,8 +319,35 @@ def play_two():
     two_turn = player_turn(two_board, two_ships, two_score)
     two_board = two_turn[0]
     two_score = two_turn[1]
+
     if two_score == 6:    # Player two winner!
       print (player_two + " is the winner!")
+
+      # Player Record
+      if two_overwrite == True:   # If record exists, add 1 to win count
+        for item in ranks:
+          for key in item:
+            if item[key] == player_two:
+              item["competitive_wins"] += 1
+      else:   # If player record does not exist, create it
+        ranks.append({ "name": player_two, \
+                      "last_single_play": 0, \
+                      "best_single_play": 0, \
+                      "competitive_wins": 1, \
+                      "competitive_losses": 0 })
+      if one_overwrite == True:   # If record exists, add 1 to loss count
+        for item in ranks:
+          for key in item:
+            if item[key] == player_one:
+              item["competitive_losses"] += 1
+      else:   # If player record does not exist, create it
+        ranks.append({ "name": player_one, \
+                      "last_single_play": 0, \
+                      "best_single_play": 0, \
+                      "competitive_wins": 0, \
+                      "competitive_losses": 1 })
+      json.dump( ranks, open( "battleship_rankings.json", 'w' ))    # Updates the battleship_rankings
+
       break
 
   exit()
