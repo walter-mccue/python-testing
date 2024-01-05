@@ -9,13 +9,20 @@ import json
 with open ('battleship_rankings.json') as data:
   ranks = json.load(data)
 
-#print (ranks)
-
-#def print_ranks(ranks):
-#  for item in ranks:
-#    for key in item:
-#      print (item[key])
-#print (print_ranks(ranks))
+#top_scores = json.dumps(ranks, indent = 4)
+#print (top_scores)
+  
+name = "Walter"
+def print_scores(name):
+  for item in ranks:
+    for key in item:
+      if item[key] == name:
+        record = ranks.index(item)
+        last_game = ranks[record]["last_single_play"]
+        best_score = ranks[record]["best_single_play"]
+        print ("Previous Game Score: " + str(last_game))
+        print ("Best Score: "+ str(best_score))
+print (print_scores(name))
 
 
 # Will return true if player record is found
@@ -249,7 +256,7 @@ def play_single():
                   "best_single_play": turn, \
                   "competitive_wins": 0, \
                   "competitive_losses": 0 })
-  json.dump( ranks, open( "battleship_rankings.json", 'w' ))    # Updates the battleship_rankings
+  json.dump( ranks, open( "battleship_rankings.json", 'w' ), indent = 2 )    # Updates the battleship_rankings
 
   exit()
     
@@ -309,7 +316,7 @@ def play_two():
                       "best_single_play": 0, \
                       "competitive_wins": 0, \
                       "competitive_losses": 1 })
-      json.dump( ranks, open( "battleship_rankings.json", 'w' ))    # Updates the battleship_rankings
+      json.dump( ranks, open( "battleship_rankings.json", 'w' ), indent = 2 )    # Updates the battleship_rankings
 
       break
 
@@ -346,7 +353,7 @@ def play_two():
                       "best_single_play": 0, \
                       "competitive_wins": 0, \
                       "competitive_losses": 1 })
-      json.dump( ranks, open( "battleship_rankings.json", 'w' ))    # Updates the battleship_rankings
+      json.dump( ranks, open( "battleship_rankings.json", 'w' ), indent = 2 )    # Updates the battleship_rankings
 
       break
 

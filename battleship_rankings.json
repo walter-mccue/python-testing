@@ -1,1 +1,16 @@
-[{"name": "Tester", "last_single_play": 0, "best_single_play": 0, "competitive_wins": 0, "competitive_losses": 0}, {"name": "Walter", "last_single_play": 6, "best_single_play": 6, "competitive_wins": 0, "competitive_losses": 0}]
+[
+  {
+    "name": "Walter",
+    "last_single_play": 6,
+    "best_single_play": 6,
+    "competitive_wins": 0,
+    "competitive_losses": 0
+  },
+  {
+    "name": "Tester",
+    "last_single_play": 6,
+    "best_single_play": 6,
+    "competitive_wins": 0,
+    "competitive_losses": 0
+  }
+]
