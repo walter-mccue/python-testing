@@ -197,15 +197,17 @@ def player_turn(turn_board, ships, score):
     attack[1] = 0
 
   # Determines where attacks land
-  if attack[0] == 0 or attack[1] == 0:    # Invalid attack
+  # Invalid attack
+  if attack[0] == 0 or attack[1] == 0:
     print ("Oops. Your attack wasn't even in the ocean!")
 
+  # Attack on a previous target
   elif turn_board[attack[0]][attack[1]] == "X " or turn_board[attack[0]][attack[1]] == "M ":
-    # Attack on a previous target
     print ("Oops. You already attacked that location.")
 
+  # Attack hit Carrier
   elif attack == ships[0][0] or attack == ships[0][1] or \
-  attack == ships[0][2]:    # Attack hit Carrier
+  attack == ships[0][2]:
     print ("You hit the Carrier!")
     turn_board[attack[0]][attack[1]] = "X "
     score += 1
@@ -216,7 +218,8 @@ def player_turn(turn_board, ships, score):
       turn_board[ships[0][2][0]][ships[0][2][1]] == "X ":
       print ("You sunk the Carrier!!!")
 
-  elif attack == ships[1][0] or attack == ships[1][1]:    # Attack hit Destroyer
+  # Attack hit Destroyer
+  elif attack == ships[1][0] or attack == ships[1][1]:
     print ("You hit the Destroyer!")
     turn_board[attack[0]][attack[1]] = "X "
     score += 1
@@ -226,12 +229,14 @@ def player_turn(turn_board, ships, score):
       turn_board[ships[1][1][0]][ships[1][1][1]] == "X ":
       print ("You sunk the Destroyer!!!")
 
-  elif attack == ships[2]:    # Attack hit Gunship
+  # Attack hit Gunship
+  elif attack == ships[2]:
     print ("You sunk the Gunship!!!")
     turn_board[attack[0]][attack[1]] = "X "
     score += 1
 
-  else:   # Attack missed a target but landed on the board
+  # Attack missed a target but landed on the board
+  else:
     print ("Sorry, you missed.")
     turn_board[attack[0]][attack[1]] = "M "
 
@@ -334,7 +339,7 @@ def play_two():
   while one_score != 6 or two_score != 6:
 
     # Player one turn
-    print (player_one + 's Turn:')
+    print (player_one + "'s Turn:")
     print_board(one_board)
     #print (one_ships)    # For testing only (Shows Ship locations)
     one_turn = player_turn(one_board, one_ships, one_score)
@@ -359,7 +364,7 @@ def play_two():
       break
 
     # Player two turn
-    print (player_two + 's Turn:')
+    print (player_two + "'s Turn:")
     print_board(two_board)
     #print (two_ships)    # For testing only (Shows Ship locations)
     two_turn = player_turn(two_board, two_ships, two_score)
