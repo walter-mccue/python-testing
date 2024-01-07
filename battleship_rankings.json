@@ -1,9 +1,9 @@
 [
   {
     "name": "Walter",
-    "last_single_play": 6,
+    "last_single_play": 27,
     "best_single_play": 6,
-    "competitive_wins": 0,
+    "competitive_wins": 1,
     "competitive_losses": 0
   },
   {
@@ -11,6 +11,6 @@
     "last_single_play": 6,
     "best_single_play": 6,
     "competitive_wins": 0,
-    "competitive_losses": 0
+    "competitive_losses": 1
   }
 ]
