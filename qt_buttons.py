@@ -26,19 +26,26 @@ class MainWindow(QMainWindow):
 
     self.start_game = False
     
-    button = QPushButton("Press To Start!")
-    button.setCheckable(True)
-    button.clicked.connect(self.button_toggled)
-    button.setChecked(self.start_game) 
+    self.button = QPushButton("Press To Start!")
+    self.button.setCheckable(True)
+    self.button.clicked.connect(self.button_toggled)
+    self.button.setChecked(self.start_game) 
+    #self.button.clicked.connect(self.the_button_was_clicked)
+
     # Set the central widget of the Window.
-    self.setCentralWidget(button)
+    self.setCentralWidget(self.button)
 
   # When user clicks button
   def button_toggled(self, checked):
+    #self.button.setText("You already clicked me.")
     self.start_game = checked
     if self.start_game == True:
       print("Game Started")
 
+  #def the_button_was_clicked(self):
+    #self.button.setText("You already clicked me.")
+    #self.button.setEnabled(False)
+    #self.setWindowTitle("Close Window")
 
 
 
