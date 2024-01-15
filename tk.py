@@ -1,3 +1,9 @@
+#
+#
+# Testing tkinter gui
+#
+
+
 #Import the required libraries
 from tkinter import *
 
@@ -16,9 +22,6 @@ menu.set("Do you want to play Battleship?")
 #Create a dropdown Menu
 drop = OptionMenu(win, menu,"Yes", "No")
 drop.pack()
-
-if menu == "Yes":
-  print ("Let's Play!")
 
 win.mainloop()
 
