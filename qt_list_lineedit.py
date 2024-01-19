@@ -24,7 +24,7 @@ class MainWindow(QMainWindow):
   ###List###
     #widget = QListWidget()
     #widget.addItems(["Single Player", "Two Players"])
-    ## In QListWidget there are two separate signals for the item, and the str
+    ## In QListWidget there are two separate signals the item and the str
     #widget.currentItemChanged.connect(self.index_changed)
     #widget.currentTextChanged.connect(self.text_changed)
     #self.setCentralWidget(widget)
@@ -45,6 +45,7 @@ class MainWindow(QMainWindow):
     widget.selectionChanged.connect(self.selection_changed)
     widget.textChanged.connect(self.text_changed)
     widget.textEdited.connect(self.text_edited)
+    #widget.setInputMask('a0;_') # use to force users to enter coordinates
     self.setCentralWidget(widget)
 
   def return_pressed(self):
